@@ -89,8 +89,8 @@ func (conn *Connection) pullProfilePhoto(jid types.JID) (imageName string, err e
 	if err != nil {
 		return "", fmt.Errorf("failed to read profile image: %w", err)
 	}
-	imageName = conn.hashFile(raw)
-	path := fmt.Sprintf("%s/%s.jpeg", conn.MediaPath, imageName)
+	imageName = conn.hashFile(raw) + ".jpeg"
+	path := fmt.Sprintf("%s/%s", conn.MediaPath, imageName)
 	if err = conn.writeFileIfNotExists(path, raw); err != nil {
 		return "", fmt.Errorf("failed to save profile image: %w", err)
 	}
