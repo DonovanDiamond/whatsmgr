@@ -2,6 +2,7 @@ package whatsmgr
 
 import (
 	"crypto/sha1"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"io/fs"
@@ -11,7 +12,7 @@ import (
 func (conn *Connection) hashFile(data []byte) string {
 	hash := sha1.New()
 	hash.Write(data)
-	return fmt.Sprintf("%d-%s", len(data), hash.Sum(nil))
+	return fmt.Sprintf("%d-%s", len(data), hex.EncodeToString(hash.Sum(nil)))
 }
 
 func (conn *Connection) writeFileIfNotExists(path string, data []byte) error {
