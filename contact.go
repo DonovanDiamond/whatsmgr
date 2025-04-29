@@ -19,7 +19,6 @@ type Contact struct {
 	DisplayName  *string // not always set
 	Username     *string // not always set
 	ProfilePhoto *string // not always set
-	Status       *string // not always set
 
 	Pinned           *bool  // not always set
 	Muted            *bool  // not always set

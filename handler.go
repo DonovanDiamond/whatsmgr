@@ -190,14 +190,24 @@ func (conn *Connection) handleEvent(rawEvt any) {
 		}
 		conn.Callbacks.Call(call)
 	case *events.CallOfferNotice:
+		var media CallMedia
+		if evt.Media == string(CallMediaAudio) {
+			media = CallMediaAudio
+		} else if evt.Media == string(CallMediaVideo) {
+			media = CallMediaVideo
+		}
+		var typ CallType
+		if evt.Type == string(CallTypeGroup) {
+			typ = CallTypeGroup
+		}
 		call := Call{
 			Timestamp:   evt.Timestamp,
 			CallID:      evt.CallID,
 			From:        evt.From.String(),
 			CallCreator: evt.CallCreator.String(),
 			Status:      CallStatusOffer,
-			Media:       &evt.Media,
-			Type:        &evt.Type,
+			Media:       &media,
+			Type:        &typ,
 		}
 		conn.Callbacks.Call(call)
 	case *events.CallRelayLatency:
@@ -387,7 +397,7 @@ func (conn *Connection) handleEvent(rawEvt any) {
 	case *events.FBMessage:
 		log.Warn().Any("evt", evt).Type("type", evt).Msg("NOT IMPLEMENTED")
 	case *events.Receipt:
-		status := ""
+		var status MessageStatus
 		switch evt.Type {
 		case types.ReceiptTypeSender:
 			status = MessageStatusSent

@@ -17,8 +17,8 @@ type Message struct {
 	SenderJID string
 
 	IsFromMe bool
-	Type     *string // not always set
-	Status   *string // use MessageStatus* constants, not always set
+	Type     *string        // not always set
+	Status   *MessageStatus // use MessageStatus* constants, not always set
 
 	Starred *bool // not always set
 	Deleted *bool // not always set
@@ -47,29 +47,33 @@ type Message struct {
 	LocationAccuracyInMeters *uint32  // not always set
 	LocationComment          *string  // not always set
 
-	CallLogOutcome         *string  // use CallLogOutcome* constants, not always set
-	CallLogDurationSeconds *int64   // not always set
-	CallLogType            *string  // use CallLogType* constants, not always set
-	CallLogParticipantJIDs []string // they have their own call outcomes that are not recorded, not always set
+	CallLogOutcome         *CallLogOutcome // use CallLogOutcome* constants, not always set
+	CallLogDurationSeconds *int64          // not always set
+	CallLogType            *CallLogType    // use CallLogType* constants, not always set
+	CallLogParticipantJIDs []string        // they have their own call outcomes that are not recorded, not always set
 }
 
+type MessageStatus string
+type CallLogOutcome string
+type CallLogType string
+
 const (
-	MessageStatusSent        = "sent"
-	MessageStatusDelivered   = "delivered"
-	MessageStatusRead        = "read"
-	MessageStatusServerError = "server-error"
+	MessageStatusSent        MessageStatus = "sent"
+	MessageStatusDelivered   MessageStatus = "delivered"
+	MessageStatusRead        MessageStatus = "read"
+	MessageStatusServerError MessageStatus = "server-error"
 
-	CallLogOutcomeConnected = "connected"
-	CallLogOutcomeMissed    = "missed"
-	CallLogOutcomeFailed    = "failed"
-	CallLogOutcomeRejected  = "rejected"
-	CallLogOutcomeAccepted  = "accepted"
-	CallLogOutcomeOngoing   = "ongoing"
-	CallLogOutcomeSilenced  = "silenced"
+	CallLogOutcomeConnected CallLogOutcome = "connected"
+	CallLogOutcomeMissed    CallLogOutcome = "missed"
+	CallLogOutcomeFailed    CallLogOutcome = "failed"
+	CallLogOutcomeRejected  CallLogOutcome = "rejected"
+	CallLogOutcomeAccepted  CallLogOutcome = "accepted"
+	CallLogOutcomeOngoing   CallLogOutcome = "ongoing"
+	CallLogOutcomeSilenced  CallLogOutcome = "silenced"
 
-	CallLogTypeRegular   = "regular"
-	CallLogTypeScheduled = "scheduled"
-	CallLogTypeVoiceChat = "voice-chat"
+	CallLogTypeRegular   CallLogType = "regular"
+	CallLogTypeScheduled CallLogType = "scheduled"
+	CallLogTypeVoiceChat CallLogType = "voice-chat"
 )
 
 func (conn *Connection) pullAttachments(m events.Message) (attachments []string, caption string, err error) {
@@ -257,7 +261,7 @@ func (conn *Connection) handleMessage(m events.Message) {
 	}
 	if x := m.Message.GetCallLogMesssage(); x != nil {
 		if x.CallOutcome != nil {
-			outcome := ""
+			var outcome CallLogOutcome
 			switch *x.CallOutcome {
 			case waE2E.CallLogMessage_CONNECTED:
 				outcome = CallLogOutcomeConnected
@@ -277,7 +281,7 @@ func (conn *Connection) handleMessage(m events.Message) {
 			message.CallLogOutcome = &outcome
 		}
 		if x.CallType != nil {
-			callType := ""
+			var callType CallLogType
 			switch *x.CallType {
 			case waE2E.CallLogMessage_REGULAR:
 				callType = CallLogTypeRegular

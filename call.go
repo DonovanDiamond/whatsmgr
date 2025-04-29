@@ -8,24 +8,28 @@ type Call struct {
 	From        string
 	CallCreator string
 
-	Status string // use CallStatus* constants
+	Status CallStatus // use CallStatus* constants
 
-	Media *string // use CallMedia* constants, not always set
-	Type  *string // use CallType* constants, not always set
+	Media *CallMedia // use CallMedia* constants, not always set
+	Type  *CallType  // use CallType* constants, not always set
 
 	TerminateReaason *string
 }
 
+type CallStatus string
+type CallMedia string
+type CallType string
+
 const (
-	CallStatusOffer     = "offer"
-	CallStatusAccept    = "accept"
-	CallStatusPreAccept = "pre-accept"
-	CallStatusTransport = "transport"
-	CallStatusTerminate = "terminate"
-	CallStatusReject    = "reject"
+	CallStatusOffer     CallStatus = "offer"
+	CallStatusAccept    CallStatus = "accept"
+	CallStatusPreAccept CallStatus = "pre-accept"
+	CallStatusTransport CallStatus = "transport"
+	CallStatusTerminate CallStatus = "terminate"
+	CallStatusReject    CallStatus = "reject"
 
-	CallMediaAudio = "audio"
-	CallMediaVideo = "video"
+	CallMediaAudio CallMedia = "audio"
+	CallMediaVideo CallMedia = "video"
 
-	CallTypeGroup = "group"
+	CallTypeGroup CallType = "group"
 )
