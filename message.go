@@ -27,7 +27,7 @@ type Message struct {
 
 	InfoQuotedMessageID *string // not always set
 	InfoParticipant     *string // not always set
-	InfoRemoteJID       *string //not always set
+	InfoRemoteJID       *string // not always set
 
 	Attachments     []string // not always set
 	ThumbnailJPEG   []byte   // not always set

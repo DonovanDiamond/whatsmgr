@@ -12,7 +12,7 @@ import (
 type Callbacks struct {
 	QRCode func(string)
 
-	ConnStatus func(string)
+	ConnStatus func(ConnStatus)
 	Error      func(error)
 
 	Contact func(Contact)
@@ -21,12 +21,14 @@ type Callbacks struct {
 	User    func(User)
 }
 
+type ConnStatus string
+
 const (
-	ConnStatusConnected    = "connected"
-	ConnStatusDisconnected = "disconnected"
-	ConnStatusQRCodeScan   = "qr code scan"
-	ConnStatusLoggedOut    = "logged out"
-	ConnStatusError        = "error"
+	ConnStatusConnected    ConnStatus = "connected"
+	ConnStatusDisconnected ConnStatus = "disconnected"
+	ConnStatusQRCodeScan   ConnStatus = "qr code scan"
+	ConnStatusLoggedOut    ConnStatus = "logged out"
+	ConnStatusError        ConnStatus = "error"
 )
 
 type User struct {
