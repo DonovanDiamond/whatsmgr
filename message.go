@@ -28,7 +28,6 @@ type Message struct {
 	InfoQuotedMessageID *string // not always set
 	InfoParticipant     *string // not always set
 	InfoRemoteJID       *string //not always set
-	InfoIsForwarded     *bool   // not always set
 
 	Attachments     []string // not always set
 	ThumbnailJPEG   []byte   // not always set
@@ -253,6 +252,8 @@ func (conn *Connection) handleMessage(m events.Message) {
 	if x := m.Message.GetReactionMessage(); x != nil {
 		message.ContentBody = x.Text
 		message.InfoQuotedMessageID = x.Key.ID
+		message.InfoRemoteJID = x.Key.RemoteJID
+		message.InfoParticipant = x.Key.Participant
 	}
 	if x := m.Message.GetCallLogMesssage(); x != nil {
 		if x.CallOutcome != nil {
