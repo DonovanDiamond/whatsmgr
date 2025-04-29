@@ -29,11 +29,7 @@ type Message struct {
 	InfoParticipant     *string // not always set
 	InfoRemoteJID       *string // not always set
 
-	Attachments     []string // not always set
-	ThumbnailJPEG   []byte   // not always set
-	ThumbnailPNG    []byte   // not always set
-	ThumbnailWidth  *uint32  // not always set
-	ThumbnailHeight *uint32  // not always set
+	Attachments []string // not always set
 
 	ContactVcard       *string // not always set
 	ContactDisplayName *string // not always set
@@ -212,7 +208,12 @@ func (conn *Connection) handleMessage(m events.Message) {
 		message.LocationURL = x.URL
 	}
 	if x := m.Message.GetExtendedTextMessage(); x != nil {
-		message.ThumbnailJPEG = x.JPEGThumbnail
+		fileName := conn.hashFile(x.JPEGThumbnail) + ".jpeg"
+		path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
+		err := conn.writeFileIfNotExists(path, x.JPEGThumbnail)
+		if err == nil {
+			message.Attachments = append(message.Attachments, fileName)
+		}
 		if x.Text != nil {
 			message.ContentBody = x.Text
 		}
@@ -227,10 +228,12 @@ func (conn *Connection) handleMessage(m events.Message) {
 		message.LocationLon = x.DegreesLongitude
 	}
 	if x := m.Message.GetStickerMessage(); x != nil {
-		message.ThumbnailPNG = x.PngThumbnail
-		message.ThumbnailHeight = x.Height
-		message.ThumbnailWidth = x.Width
-		// TODO: there is a lot more that could be implemented here...
+		fileName := conn.hashFile(x.PngThumbnail) + ".png"
+		path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
+		err := conn.writeFileIfNotExists(path, x.PngThumbnail)
+		if err == nil {
+			message.Attachments = append(message.Attachments, fileName)
+		}
 	}
 	if x := m.Message.GetGroupInviteMessage(); x != nil {
 		invite := "**Group Invite**\n"
@@ -250,8 +253,12 @@ func (conn *Connection) handleMessage(m events.Message) {
 			invite += "\nCaption: " + *x.Caption
 		}
 		message.ContentBody = &invite
-		message.ThumbnailJPEG = x.JPEGThumbnail
-
+		fileName := conn.hashFile(x.JPEGThumbnail) + ".jpeg"
+		path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
+		err := conn.writeFileIfNotExists(path, x.JPEGThumbnail)
+		if err == nil {
+			message.Attachments = append(message.Attachments, fileName)
+		}
 	}
 	if x := m.Message.GetReactionMessage(); x != nil {
 		message.ContentBody = x.Text
@@ -306,10 +313,10 @@ func (conn *Connection) handleMessage(m events.Message) {
 		message.CallLogParticipantJIDs = jids
 	}
 	if x := m.Message.GetEditedMessage(); x != nil {
-		log.Warn().Any("x", x).Msg("NOT IMPLEMENTED: Message.GetMessageContextInfo()")
+		log.Warn().Any("x", x).Msg("NOT IMPLEMENTED: Message.GetEditedMessage()")
 	}
 	if x := m.Message.GetMessageContextInfo(); x != nil {
-		log.Warn().Any("x", x).Msg("NOT IMPLEMENTED: Message.GetMessageContextInfo()")
+		//log.Warn().Any("x", x).Msg("NOT IMPLEMENTED: Message.GetMessageContextInfo()")
 	}
 	if x := m.Message.GetCall(); x != nil {
 		log.Warn().Any("x", x).Msg("NOT IMPLEMENTED: Message.GetCall()")

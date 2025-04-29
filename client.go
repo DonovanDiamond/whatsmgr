@@ -74,6 +74,14 @@ func (conn *Connection) Disconnect() {
 	conn.client.Disconnect()
 }
 
+func (conn *Connection) IsConnected() bool {
+	return conn.client.IsConnected()
+}
+
+func (conn *Connection) IsLoggedIn() bool {
+	return conn.client.IsLoggedIn()
+}
+
 func (conn *Connection) runQRHandler() error {
 	ch, err := conn.client.GetQRChannel(context.Background())
 	if errors.Is(err, whatsmeow.ErrQRStoreContainsID) {
