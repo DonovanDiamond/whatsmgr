@@ -29,8 +29,8 @@ type Contact struct {
 
 	Available *bool      // not always set
 	LastSeen  *time.Time // not always set
-	Typing    *bool      // not always set
-	Recording *bool      // not always set
+	Typing    *string    // the JID who is typing, not always set
+	Recording *string    // the JID who is recording, not always set
 
 	IsGroup *bool // not always set
 
@@ -42,16 +42,15 @@ type Group struct {
 	GroupTopic                   *string            // not always set
 	GroupInfoLockedToAdmins      *bool              // not always set
 	GroupOnlyAdminCanMessage     *bool              // not always set
+	GroupOnlyAdminsCanAddMembers *bool              // not always set
 	GroupIsParent                *bool              // not always set
 	GroupLinkedParentJID         *string            // not always set
 	GroupIsDefaultSubGroup       *bool              // not always set
 	GroupJoinApprovalRequired    *bool              // not always set
 	GroupCreated                 *time.Time         // not always set
-	GroupOnlyAdminsCanAddMembers *bool              // not always set
 	GroupReplaceParticipants     []GroupParticipant // replace all existing participants with these, not always set
 	GroupAddParticipants         []GroupParticipant // add to existing participants, not always set
 	GroupRemovedParticipants     []GroupParticipant // remove from existing participants, not always set
-	GroupParticipantTyping       *string            // not always set
 	GroupInviteLink              *string            // not always set
 }
 

@@ -416,15 +416,15 @@ func (conn *Connection) handleEvent(rawEvt any) {
 		contact := Contact{
 			JID: evt.Chat.String(),
 		}
-		typing := false
-		recording := false
+		typing := ""
+		recording := ""
 		available := true
 		lastSeen := time.Now()
 		if evt.State == types.ChatPresenceComposing {
 			if evt.Media == types.ChatPresenceMediaAudio {
-				recording = true
+				recording = evt.Sender.String()
 			} else {
-				typing = true
+				typing = evt.Sender.String()
 			}
 			contact.LastSeen = &lastSeen
 			contact.Available = &available
