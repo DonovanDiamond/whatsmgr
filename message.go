@@ -218,6 +218,12 @@ func (conn *Connection) handleMessage(m events.Message) {
 		if x.Text != nil {
 			message.ContentBody = x.Text
 		}
+		if x.ContextInfo != nil {
+			// StanzaID is the ID of the message being quoted as per https://github.com/tulir/whatsmeow/issues/88
+			if x.ContextInfo.StanzaID != nil {
+				message.InfoQuotedMessageID = x.ContextInfo.StanzaID
+			}
+		}
 		// TODO: there is a lot more that could be implemented here...
 	}
 	if x := m.Message.GetLiveLocationMessage(); x != nil {
