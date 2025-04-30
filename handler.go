@@ -79,7 +79,7 @@ func (conn *Connection) handleEvent(rawEvt any) {
 			ChatJID:   evt.ChatJID.String(),
 			SenderJID: evt.SenderJID.String(),
 
-			IsFromMe: evt.IsFromMe,
+			// IsFromMe: evt.IsFromMe, // this may not be correct, maybe its because the event is from me, and the message itself is not...
 		}
 		if evt.Action != nil {
 			msg.Starred = evt.Action.Starred
@@ -93,7 +93,7 @@ func (conn *Connection) handleEvent(rawEvt any) {
 			ChatJID:   evt.ChatJID.String(),
 			SenderJID: evt.SenderJID.String(),
 
-			IsFromMe: evt.IsFromMe,
+			// IsFromMe: evt.IsFromMe, // this may not be correct, maybe its because the event is from me, and the message itself is not...
 		}
 		if evt.Action != nil {
 			t := true
@@ -419,8 +419,8 @@ func (conn *Connection) handleEvent(rawEvt any) {
 				ChatJID:   evt.Chat.String(),
 				SenderJID: evt.Sender.String(),
 
-				IsFromMe: evt.IsFromMe,
-				Status:   &status,
+				// IsFromMe: evt.IsFromMe, // this may not be correct, maybe its because the event is from me, and the message itself is not...
+				Status: &status,
 			}
 			conn.Callbacks.Message(message)
 		}

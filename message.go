@@ -16,7 +16,7 @@ type Message struct {
 	ChatJID   string
 	SenderJID string
 
-	IsFromMe bool
+	IsFromMe *bool
 	Type     *string        // not always set
 	Status   *MessageStatus // use MessageStatus* constants, not always set
 
@@ -175,7 +175,7 @@ func (conn *Connection) handleMessage(m events.Message) {
 		ChatJID:   m.Info.Chat.String(),
 		SenderJID: m.Info.Sender.String(),
 
-		IsFromMe: m.Info.IsFromMe,
+		IsFromMe: &m.Info.IsFromMe,
 
 		Type: &m.Info.Type,
 	}
