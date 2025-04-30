@@ -14,7 +14,7 @@ type Message struct {
 
 	MessageID string
 	ChatJID   string
-	SenderJID string
+	SenderJID *string
 
 	IsFromMe *bool
 	Type     *string        // not always set
@@ -168,12 +168,13 @@ func (conn *Connection) handleMessage(m events.Message) {
 	if m.Message == nil {
 		return
 	}
+	sender := m.Info.Sender.String()
 	message := Message{
 		Timestamp: &m.Info.Timestamp,
 
 		MessageID: m.Info.ID,
 		ChatJID:   m.Info.Chat.String(),
-		SenderJID: m.Info.Sender.String(),
+		SenderJID: &sender,
 
 		IsFromMe: &m.Info.IsFromMe,
 

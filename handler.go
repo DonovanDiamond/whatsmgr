@@ -80,7 +80,7 @@ func (conn *Connection) handleEvent(rawEvt any) {
 
 			MessageID: evt.MessageID,
 			ChatJID:   evt.ChatJID.String(),
-			SenderJID: evt.SenderJID.String(),
+			// SenderJID: evt.SenderJID.String(), // we don't want to change the sender if I starred it
 
 			// IsFromMe: evt.IsFromMe, // this may not be correct, maybe its because the event is from me, and the message itself is not...
 		}
@@ -94,7 +94,7 @@ func (conn *Connection) handleEvent(rawEvt any) {
 
 			MessageID: evt.MessageID,
 			ChatJID:   evt.ChatJID.String(),
-			SenderJID: evt.SenderJID.String(),
+			// SenderJID: evt.SenderJID.String(), // we don't want to change the sender if I deleted it
 
 			// IsFromMe: evt.IsFromMe, // this may not be correct, maybe its because the event is from me, and the message itself is not...
 		}
@@ -420,7 +420,7 @@ func (conn *Connection) handleEvent(rawEvt any) {
 
 				MessageID: id,
 				ChatJID:   evt.Chat.String(),
-				SenderJID: evt.Sender.String(),
+				// SenderJID: evt.Sender.String(), // we don't want to change the sender if a message was read by myself...
 
 				// IsFromMe: evt.IsFromMe, // this may not be correct, maybe its because the event is from me, and the message itself is not...
 				Status: &status,
