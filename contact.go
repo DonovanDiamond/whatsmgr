@@ -67,7 +67,7 @@ const (
 )
 
 func (conn *Connection) pullProfilePhoto(jid types.JID) (imageName string, err error) {
-	existingID := conn.ProfilePhotoCache[jid.String()]
+	existingID := conn.Callbacks.GetExistingProfilePhotoID(jid.String())
 
 	info, err := conn.client.GetProfilePictureInfo(jid, &whatsmeow.GetProfilePictureParams{
 		ExistingID: existingID,
@@ -75,7 +75,7 @@ func (conn *Connection) pullProfilePhoto(jid types.JID) (imageName string, err e
 	if err != nil || info == nil {
 		return "", nil
 	}
-	conn.ProfilePhotoCache[jid.String()] = info.ID
+	conn.Callbacks.PushNewProfilePhotoID(jid.String(), info.ID)
 
 	resp, err := http.Get(info.URL)
 	if err != nil {

@@ -19,6 +19,9 @@ type Callbacks struct {
 	Message func(Message)
 	Call    func(Call)
 	User    func(User)
+
+	GetExistingProfilePhotoID func(jid string) (photoID string)
+	PushNewProfilePhotoID     func(jid, photoID string)
 }
 
 type ConnStatus string

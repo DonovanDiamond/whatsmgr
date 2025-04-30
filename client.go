@@ -11,11 +11,10 @@ import (
 )
 
 type Connection struct {
-	Number            string
-	DBPath            string
-	MediaPath         string
-	Log               Logger
-	ProfilePhotoCache map[string]string // map JID to existing profile photo id
+	Number    string
+	DBPath    string
+	MediaPath string
+	Log       Logger
 
 	Callbacks Callbacks
 
