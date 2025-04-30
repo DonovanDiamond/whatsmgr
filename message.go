@@ -10,7 +10,7 @@ import (
 )
 
 type Message struct {
-	Timestamp time.Time
+	Timestamp *time.Time
 
 	MessageID string
 	ChatJID   string
@@ -169,7 +169,7 @@ func (conn *Connection) handleMessage(m events.Message) {
 		return
 	}
 	message := Message{
-		Timestamp: m.Info.Timestamp,
+		Timestamp: &m.Info.Timestamp,
 
 		MessageID: m.Info.ID,
 		ChatJID:   m.Info.Chat.String(),

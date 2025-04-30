@@ -76,7 +76,7 @@ func (conn *Connection) handleEvent(rawEvt any) {
 		conn.Callbacks.Contact(contact)
 	case *events.Star:
 		msg := Message{
-			Timestamp: evt.Timestamp,
+			// Timestamp: evt.Timestamp, // we don't want to change the messages date because someone starred it
 
 			MessageID: evt.MessageID,
 			ChatJID:   evt.ChatJID.String(),
@@ -90,7 +90,7 @@ func (conn *Connection) handleEvent(rawEvt any) {
 		conn.Callbacks.Message(msg)
 	case *events.DeleteForMe:
 		msg := Message{
-			Timestamp: evt.Timestamp,
+			// Timestamp: evt.Timestamp, // we don't want to change the messages date because someone deleted it
 
 			MessageID: evt.MessageID,
 			ChatJID:   evt.ChatJID.String(),
@@ -416,7 +416,7 @@ func (conn *Connection) handleEvent(rawEvt any) {
 		}
 		for _, id := range evt.MessageIDs {
 			message := Message{
-				Timestamp: evt.Timestamp,
+				// Timestamp: evt.Timestamp, // we don't want to change the messages date because someone read it...
 
 				MessageID: id,
 				ChatJID:   evt.Chat.String(),
