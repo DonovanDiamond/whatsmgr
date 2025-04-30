@@ -79,34 +79,38 @@ func (conn *Connection) pullAttachments(m events.Message) (attachments []string,
 		if err != nil {
 			return attachments, caption, fmt.Errorf("failed to download attachment: %w", err)
 		}
-		fileName := conn.hashFile(raw)
-		exts, _ := mime.ExtensionsByType(att.GetMimetype())
-		if len(exts) > 0 {
-			fileName += exts[0]
+		if len(raw) > 0 {
+			fileName := conn.hashFile(raw)
+			exts, _ := mime.ExtensionsByType(att.GetMimetype())
+			if len(exts) > 0 {
+				fileName += exts[0]
+			}
+			path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
+			if err := conn.writeFileIfNotExists(path, raw); err != nil {
+				return attachments, caption, fmt.Errorf("failed to write attachment: %w", err)
+			}
+			attachments = append(attachments, fileName)
 		}
-		path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
-		if err := conn.writeFileIfNotExists(path, raw); err != nil {
-			return attachments, caption, fmt.Errorf("failed to write attachment: %w", err)
-		}
-		attachments = append(attachments, fileName)
 	}
 	if att := m.Message.GetAudioMessage(); att != nil {
 		raw, err := conn.client.Download(att)
 		if err != nil {
 			return attachments, caption, fmt.Errorf("failed to download attachment: %w", err)
 		}
-		fileName := conn.hashFile(raw)
-		exts, _ := mime.ExtensionsByType(att.GetMimetype())
-		if len(exts) > 0 {
-			fileName += exts[0]
-		} else {
-			fileName += ".ogg"
+		if len(raw) > 0 {
+			fileName := conn.hashFile(raw)
+			exts, _ := mime.ExtensionsByType(att.GetMimetype())
+			if len(exts) > 0 {
+				fileName += exts[0]
+			} else {
+				fileName += ".ogg"
+			}
+			path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
+			if err := conn.writeFileIfNotExists(path, raw); err != nil {
+				return attachments, caption, fmt.Errorf("failed to write attachment: %w", err)
+			}
+			attachments = append(attachments, fileName)
 		}
-		path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
-		if err := conn.writeFileIfNotExists(path, raw); err != nil {
-			return attachments, caption, fmt.Errorf("failed to write attachment: %w", err)
-		}
-		attachments = append(attachments, fileName)
 	}
 	if att := m.Message.GetVideoMessage(); att != nil {
 		caption = att.GetCaption()
@@ -114,18 +118,20 @@ func (conn *Connection) pullAttachments(m events.Message) (attachments []string,
 		if err != nil {
 			return attachments, caption, fmt.Errorf("failed to download attachment: %w", err)
 		}
-		fileName := conn.hashFile(raw)
-		exts, _ := mime.ExtensionsByType(att.GetMimetype())
-		if len(exts) > 0 {
-			fileName += exts[0]
-		} else {
-			fileName += ".mp4"
+		if len(raw) > 0 {
+			fileName := conn.hashFile(raw)
+			exts, _ := mime.ExtensionsByType(att.GetMimetype())
+			if len(exts) > 0 {
+				fileName += exts[0]
+			} else {
+				fileName += ".mp4"
+			}
+			path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
+			if err := conn.writeFileIfNotExists(path, raw); err != nil {
+				return attachments, caption, fmt.Errorf("failed to write attachment: %w", err)
+			}
+			attachments = append(attachments, fileName)
 		}
-		path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
-		if err := conn.writeFileIfNotExists(path, raw); err != nil {
-			return attachments, caption, fmt.Errorf("failed to write attachment: %w", err)
-		}
-		attachments = append(attachments, fileName)
 	}
 	if att := m.Message.GetDocumentMessage(); att != nil {
 		caption = att.GetCaption()
@@ -133,32 +139,36 @@ func (conn *Connection) pullAttachments(m events.Message) (attachments []string,
 		if err != nil {
 			return attachments, caption, fmt.Errorf("failed to download attachment: %w", err)
 		}
-		fileName := conn.hashFile(raw)
-		exts, _ := mime.ExtensionsByType(att.GetMimetype())
-		if len(exts) > 0 {
-			fileName += exts[0]
+		if len(raw) > 0 {
+			fileName := conn.hashFile(raw)
+			exts, _ := mime.ExtensionsByType(att.GetMimetype())
+			if len(exts) > 0 {
+				fileName += exts[0]
+			}
+			path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
+			if err := conn.writeFileIfNotExists(path, raw); err != nil {
+				return attachments, caption, fmt.Errorf("failed to write attachment: %w", err)
+			}
+			attachments = append(attachments, fileName)
 		}
-		path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
-		if err := conn.writeFileIfNotExists(path, raw); err != nil {
-			return attachments, caption, fmt.Errorf("failed to write attachment: %w", err)
-		}
-		attachments = append(attachments, fileName)
 	}
 	if att := m.Message.GetStickerMessage(); att != nil {
 		raw, err := conn.client.Download(att)
 		if err != nil {
 			return attachments, caption, fmt.Errorf("failed to download attachment: %w", err)
 		}
-		fileName := conn.hashFile(raw)
-		exts, _ := mime.ExtensionsByType(att.GetMimetype())
-		if len(exts) > 0 {
-			fileName += exts[0]
+		if len(raw) > 0 {
+			fileName := conn.hashFile(raw)
+			exts, _ := mime.ExtensionsByType(att.GetMimetype())
+			if len(exts) > 0 {
+				fileName += exts[0]
+			}
+			path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
+			if err := conn.writeFileIfNotExists(path, raw); err != nil {
+				return attachments, caption, fmt.Errorf("failed to write attachment: %w", err)
+			}
+			attachments = append(attachments, fileName)
 		}
-		path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
-		if err := conn.writeFileIfNotExists(path, raw); err != nil {
-			return attachments, caption, fmt.Errorf("failed to write attachment: %w", err)
-		}
-		attachments = append(attachments, fileName)
 	}
 	return
 }
@@ -209,11 +219,13 @@ func (conn *Connection) handleMessage(m events.Message) {
 		message.LocationURL = x.URL
 	}
 	if x := m.Message.GetExtendedTextMessage(); x != nil {
-		fileName := conn.hashFile(x.JPEGThumbnail) + ".jpeg"
-		path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
-		err := conn.writeFileIfNotExists(path, x.JPEGThumbnail)
-		if err == nil {
-			message.Attachments = append(message.Attachments, fileName)
+		if len(x.JPEGThumbnail) > 0 {
+			fileName := conn.hashFile(x.JPEGThumbnail) + ".jpeg"
+			path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
+			err := conn.writeFileIfNotExists(path, x.JPEGThumbnail)
+			if err == nil {
+				message.Attachments = append(message.Attachments, fileName)
+			}
 		}
 		if x.Text != nil {
 			message.ContentBody = x.Text
@@ -235,11 +247,13 @@ func (conn *Connection) handleMessage(m events.Message) {
 		message.LocationLon = x.DegreesLongitude
 	}
 	if x := m.Message.GetStickerMessage(); x != nil {
-		fileName := conn.hashFile(x.PngThumbnail) + ".png"
-		path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
-		err := conn.writeFileIfNotExists(path, x.PngThumbnail)
-		if err == nil {
-			message.Attachments = append(message.Attachments, fileName)
+		if len(x.PngThumbnail) > 0 {
+			fileName := conn.hashFile(x.PngThumbnail) + ".png"
+			path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
+			err := conn.writeFileIfNotExists(path, x.PngThumbnail)
+			if err == nil {
+				message.Attachments = append(message.Attachments, fileName)
+			}
 		}
 	}
 	if x := m.Message.GetGroupInviteMessage(); x != nil {
@@ -260,11 +274,13 @@ func (conn *Connection) handleMessage(m events.Message) {
 			invite += "\nCaption: " + *x.Caption
 		}
 		message.ContentBody = &invite
-		fileName := conn.hashFile(x.JPEGThumbnail) + ".jpeg"
-		path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
-		err := conn.writeFileIfNotExists(path, x.JPEGThumbnail)
-		if err == nil {
-			message.Attachments = append(message.Attachments, fileName)
+		if len(x.JPEGThumbnail) > 0 {
+			fileName := conn.hashFile(x.JPEGThumbnail) + ".jpeg"
+			path := fmt.Sprintf("%s/%s", conn.MediaPath, fileName)
+			err := conn.writeFileIfNotExists(path, x.JPEGThumbnail)
+			if err == nil {
+				message.Attachments = append(message.Attachments, fileName)
+			}
 		}
 	}
 	if x := m.Message.GetReactionMessage(); x != nil {
