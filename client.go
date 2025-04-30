@@ -98,3 +98,28 @@ func (conn *Connection) runQRHandler() error {
 	}()
 	return nil
 }
+
+func (conn *Connection) SyncAllContacts() error {
+	contacts, err := conn.client.Store.Contacts.GetAllContacts()
+	if err != nil {
+		return fmt.Errorf("failed to get all contacts: %w", err)
+	}
+
+	for jid, contactInfo := range contacts {
+		contact := Contact{
+			JID: jid.String(),
+		}
+		if contactInfo.FullName != "" {
+			contact.ContactName = &contactInfo.FullName
+		}
+		if contactInfo.PushName != "" {
+			contact.PushName = &contactInfo.PushName
+		}
+		photo, _ := conn.pullProfilePhoto(jid)
+		if photo != "" {
+			contact.ProfilePhoto = &photo
+		}
+		conn.Callbacks.Contact(contact)
+	}
+	return nil
+}

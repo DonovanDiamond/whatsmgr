@@ -458,8 +458,10 @@ func (conn *Connection) handleEvent(rawEvt any) {
 	case *events.JoinedGroup:
 		parentJID := evt.GroupInfo.LinkedParentJID.String()
 		onlyAdminsCanAddMembers := evt.GroupInfo.MemberAddMode == types.GroupMemberAddModeAdmin
+		isGroup := true
 		contact := Contact{
-			JID: evt.JID.String(),
+			JID:     evt.JID.String(),
+			IsGroup: &isGroup,
 			Group: Group{
 				GroupName:                    &evt.GroupInfo.Name,
 				GroupTopic:                   &evt.GroupInfo.Topic,
@@ -496,8 +498,10 @@ func (conn *Connection) handleEvent(rawEvt any) {
 		}
 		conn.Callbacks.Contact(contact)
 	case *events.GroupInfo:
+		isGroup := true
 		contact := Contact{
-			JID: evt.JID.String(),
+			JID:     evt.JID.String(),
+			IsGroup: &isGroup,
 			Group: Group{
 				GroupInviteLink: evt.NewInviteLink,
 			},
