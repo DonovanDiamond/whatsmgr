@@ -10,43 +10,43 @@ import (
 )
 
 type Message struct {
-	Timestamp *time.Time
+	Timestamp *time.Time `json:",omitempty"`
 
-	MessageID string
-	ChatJID   string
-	SenderJID *string
+	MessageID string  `json:",omitempty"`
+	ChatJID   string  `json:",omitempty"`
+	SenderJID *string `json:",omitempty"`
 
-	IsFromMe *bool
-	Type     *string        // not always set
-	Status   *MessageStatus // use MessageStatus* constants, not always set
+	IsFromMe *bool          `json:",omitempty"`
+	Type     *string        `json:",omitempty"` // not always set
+	Status   *MessageStatus `json:",omitempty"` // use MessageStatus* constants, not always set
 
-	Starred *bool // not always set
-	Deleted *bool // not always set
+	Starred *bool `json:",omitempty"` // not always set
+	Deleted *bool `json:",omitempty"` // not always set
 
-	ContentBody *string // not always set
+	ContentBody *string `json:",omitempty"` // not always set
 
-	InfoQuotedMessageID *string // not always set
-	InfoParticipant     *string // not always set
-	InfoRemoteJID       *string // not always set
+	InfoQuotedMessageID *string `json:",omitempty"` // not always set
+	InfoParticipant     *string `json:",omitempty"` // not always set
+	InfoRemoteJID       *string `json:",omitempty"` // not always set
 
-	Attachments []string // not always set
+	Attachments []string `json:",omitempty"` // not always set
 
-	ContactVcard       *string // not always set
-	ContactDisplayName *string // not always set
+	ContactVcard       *string `json:",omitempty"` // not always set
+	ContactDisplayName *string `json:",omitempty"` // not always set
 
-	LocationLat              *float64 // not always set
-	LocationLon              *float64 // not always set
-	LocationName             *string  // not always set
-	LocationAddress          *string  // not always set
-	LocationURL              *string  // not always set
-	LocationIsLive           *bool    // not always set
-	LocationAccuracyInMeters *uint32  // not always set
-	LocationComment          *string  // not always set
+	LocationLat              *float64 `json:",omitempty"` // not always set
+	LocationLon              *float64 `json:",omitempty"` // not always set
+	LocationName             *string  `json:",omitempty"` // not always set
+	LocationAddress          *string  `json:",omitempty"` // not always set
+	LocationURL              *string  `json:",omitempty"` // not always set
+	LocationIsLive           *bool    `json:",omitempty"` // not always set
+	LocationAccuracyInMeters *uint32  `json:",omitempty"` // not always set
+	LocationComment          *string  `json:",omitempty"` // not always set
 
-	CallLogOutcome         *CallLogOutcome // use CallLogOutcome* constants, not always set
-	CallLogDurationSeconds *int64          // not always set
-	CallLogType            *CallLogType    // use CallLogType* constants, not always set
-	CallLogParticipantJIDs []string        // they have their own call outcomes that are not recorded, not always set
+	CallLogOutcome         *CallLogOutcome `json:",omitempty"` // use CallLogOutcome* constants, not always set
+	CallLogDurationSeconds *int64          `json:",omitempty"` // not always set
+	CallLogType            *CallLogType    `json:",omitempty"` // use CallLogType* constants, not always set
+	CallLogParticipantJIDs []string        `json:",omitempty"` // they have their own call outcomes that are not recorded, not always set
 }
 
 type MessageStatus string

@@ -4,16 +4,16 @@ import "time"
 
 type Call struct {
 	Timestamp   time.Time
-	CallID      string
-	From        string
-	CallCreator string
+	CallID      string `json:",omitempty"`
+	From        string `json:",omitempty"`
+	CallCreator string `json:",omitempty"`
 
-	Status CallStatus // use CallStatus* constants
+	Status CallStatus `json:",omitempty"` // use CallStatus* constants
 
-	Media *CallMedia // use CallMedia* constants, not always set
-	Type  *CallType  // use CallType* constants, not always set
+	Media *CallMedia `json:",omitempty"` // use CallMedia* constants, not always set
+	Type  *CallType  `json:",omitempty"` // use CallType* constants, not always set
 
-	TerminateReaason *string
+	TerminateReaason *string `json:",omitempty"`
 }
 
 type CallStatus string

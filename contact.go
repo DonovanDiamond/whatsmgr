@@ -11,46 +11,46 @@ import (
 )
 
 type Contact struct {
-	Timestamp *time.Time // not always set
+	Timestamp *time.Time `json:",omitempty"` // not always set
 
-	JID          string
-	PushName     *string // not always set
-	ContactName  *string // not always set
-	DisplayName  *string // not always set
-	Username     *string // not always set
-	ProfilePhoto *string // not always set
+	JID          string  `json:",omitempty"`
+	PushName     *string `json:",omitempty"` // not always set
+	ContactName  *string `json:",omitempty"` // not always set
+	DisplayName  *string `json:",omitempty"` // not always set
+	Username     *string `json:",omitempty"` // not always set
+	ProfilePhoto *string `json:",omitempty"` // not always set
 
-	Pinned           *bool  // not always set
-	Muted            *bool  // not always set
-	MuteEndTimestamp *int64 // not always set
-	StatusMuted      *bool  // not always set
-	Archived         *bool  // not always set
+	Pinned           *bool  `json:",omitempty"` // not always set
+	Muted            *bool  `json:",omitempty"` // not always set
+	MuteEndTimestamp *int64 `json:",omitempty"` // not always set
+	StatusMuted      *bool  `json:",omitempty"` // not always set
+	Archived         *bool  `json:",omitempty"` // not always set
 
-	Available *bool      // not always set
-	LastSeen  *time.Time // not always set
-	Typing    *string    // the JID who is typing, not always set
-	Recording *string    // the JID who is recording, not always set
+	Available *bool      `json:",omitempty"` // not always set
+	LastSeen  *time.Time `json:",omitempty"` // not always set
+	Typing    *string    `json:",omitempty"` // the JID who is typing, not always set
+	Recording *string    `json:",omitempty"` // the JID who is recording, not always set
 
-	IsGroup *bool // not always set
+	IsGroup *bool `json:",omitempty"` // not always set
 
 	Group
 }
 
 type Group struct {
-	GroupName                    *string            // not always set
-	GroupTopic                   *string            // not always set
-	GroupInfoLockedToAdmins      *bool              // not always set
-	GroupOnlyAdminCanMessage     *bool              // not always set
-	GroupOnlyAdminsCanAddMembers *bool              // not always set
-	GroupIsParent                *bool              // not always set
-	GroupLinkedParentJID         *string            // not always set
-	GroupIsDefaultSubGroup       *bool              // not always set
-	GroupJoinApprovalRequired    *bool              // not always set
-	GroupCreated                 *time.Time         // not always set
-	GroupReplaceParticipants     []GroupParticipant // replace all existing participants with these, not always set
-	GroupAddParticipants         []GroupParticipant // add to existing participants, not always set
-	GroupRemovedParticipants     []GroupParticipant // remove from existing participants, not always set
-	GroupInviteLink              *string            // not always set
+	GroupName                    *string            `json:",omitempty"` // not always set
+	GroupTopic                   *string            `json:",omitempty"` // not always set
+	GroupInfoLockedToAdmins      *bool              `json:",omitempty"` // not always set
+	GroupOnlyAdminCanMessage     *bool              `json:",omitempty"` // not always set
+	GroupOnlyAdminsCanAddMembers *bool              `json:",omitempty"` // not always set
+	GroupIsParent                *bool              `json:",omitempty"` // not always set
+	GroupLinkedParentJID         *string            `json:",omitempty"` // not always set
+	GroupIsDefaultSubGroup       *bool              `json:",omitempty"` // not always set
+	GroupJoinApprovalRequired    *bool              `json:",omitempty"` // not always set
+	GroupCreated                 *time.Time         `json:",omitempty"` // not always set
+	GroupReplaceParticipants     []GroupParticipant `json:",omitempty"` // replace all existing participants with these, not always set
+	GroupAddParticipants         []GroupParticipant `json:",omitempty"` // add to existing participants, not always set
+	GroupRemovedParticipants     []GroupParticipant `json:",omitempty"` // remove from existing participants, not always set
+	GroupInviteLink              *string            `json:",omitempty"` // not always set
 }
 
 type GroupParticipant struct {
