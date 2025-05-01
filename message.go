@@ -22,6 +22,7 @@ type Message struct {
 
 	Starred *bool `json:",omitempty"` // not always set
 	Deleted *bool `json:",omitempty"` // not always set
+	Edited  *bool `json:",omitempty"` // not always set
 
 	ContentBody *string `json:",omitempty"` // not always set
 
@@ -351,7 +352,29 @@ func (conn *Connection) handleMessage(m events.Message) {
 		log.Warn().Any("x", x).Msg("NOT IMPLEMENTED: Message.GetChat()")
 	}
 	if x := m.Message.GetProtocolMessage(); x != nil {
-		log.Warn().Any("x", x).Msg("NOT IMPLEMENTED: Message.GetProtocolMessage()")
+		if x.EditedMessage != nil {
+			t := true
+			em := Message{
+				ChatJID: message.ChatJID,
+				Edited:  &t,
+				Raw:     m,
+			}
+			if x.Key != nil {
+				if x.Key.ID != nil {
+					em.MessageID = *x.Key.ID
+				}
+			}
+			if x.EditedMessage.Conversation != nil {
+				em.ContentBody = x.EditedMessage.Conversation
+			}
+			if x.EditedMessage.ExtendedTextMessage != nil {
+				if x.EditedMessage.ExtendedTextMessage.Text != nil {
+					em.ContentBody = x.EditedMessage.ExtendedTextMessage.Text
+				}
+			}
+			conn.Callbacks.Message(em)
+			return
+		}
 	}
 	if x := m.Message.GetContactsArrayMessage(); x != nil {
 		log.Warn().Any("x", x).Msg("NOT IMPLEMENTED: Message.GetContactsArrayMessage()")
