@@ -47,6 +47,8 @@ type Message struct {
 	CallLogDurationSeconds *int64          `json:",omitempty"` // not always set
 	CallLogType            *CallLogType    `json:",omitempty"` // use CallLogType* constants, not always set
 	CallLogParticipantJIDs []string        `json:",omitempty"` // they have their own call outcomes that are not recorded, not always set
+
+	Raw any `json:",omitempty"`
 }
 
 type MessageStatus string
@@ -189,6 +191,7 @@ func (conn *Connection) handleMessage(m events.Message) {
 		IsFromMe: &m.Info.IsFromMe,
 
 		Type: &m.Info.Type,
+		Raw:  m,
 	}
 
 	attachments, caption, err := conn.pullAttachments(m)
