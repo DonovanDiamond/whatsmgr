@@ -4,15 +4,54 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
+	"strings"
 	"time"
 
+	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/types"
+	"google.golang.org/protobuf/proto"
 )
 
 func (conn *Connection) SendMessage(message Message, sendOnCallback bool) (Message, error) {
-	out := waE2E.Message{
-		Conversation: message.ContentBody,
+	var out waE2E.Message
+	if len(message.Attachments) > 0 {
+		attachment := message.Attachments[0]
+
+		parts := strings.Split(attachment, ".")
+		if len(parts) < 2 {
+			return message, fmt.Errorf("invalid attachment with no extension: %s", attachment)
+		}
+		ext := strings.ToLower(parts[len(parts)-1])
+
+		path := fmt.Sprintf("%s/%s", conn.MediaPath, attachment)
+		raw, err := os.ReadFile(path)
+		if err != nil {
+			return message, fmt.Errorf("failed to read file to send: %w", err)
+		}
+
+		switch ext {
+		case "jpg", "jpeg", "png":
+			resp, err := conn.client.Upload(context.Background(), raw, whatsmeow.MediaImage)
+			if err != nil {
+				return message, fmt.Errorf("failed to upload image to send: %w", err)
+			}
+			out.ImageMessage = &waE2E.ImageMessage{
+				Caption:       proto.String(*message.ContentBody),
+				Mimetype:      proto.String("image/" + ext),
+				URL:           &resp.URL,
+				DirectPath:    &resp.DirectPath,
+				MediaKey:      resp.MediaKey,
+				FileEncSHA256: resp.FileEncSHA256,
+				FileSHA256:    resp.FileSHA256,
+				FileLength:    &resp.FileLength,
+			}
+		}
+	} else {
+		out = waE2E.Message{
+			Conversation: message.ContentBody,
+		}
 	}
 	jid, err := types.ParseJID(message.ChatJID)
 	if err != nil {
