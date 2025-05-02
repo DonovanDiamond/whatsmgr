@@ -47,6 +47,8 @@ func (conn *Connection) SendMessage(message Message, sendOnCallback bool) (Messa
 				FileSHA256:    resp.FileSHA256,
 				FileLength:    &resp.FileLength,
 			}
+		default:
+			return message, fmt.Errorf("unknown attachment type: %s", ext)
 		}
 	} else {
 		out = waE2E.Message{
