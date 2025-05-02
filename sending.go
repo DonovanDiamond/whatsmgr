@@ -62,7 +62,7 @@ func (conn *Connection) SendMessage(message Message, sendOnCallback bool) (Messa
 				FileSHA256:    resp.FileSHA256,
 				FileLength:    &resp.FileLength,
 			}
-		case "aac", "amr", "mp3", "m4a", "wav", "ogg":
+		case "aac", "amr", "mp3", "m4a", "ogg":
 			resp, err := conn.client.Upload(context.Background(), raw, whatsmeow.MediaAudio)
 			if err != nil {
 				return message, fmt.Errorf("failed to upload audio to send: %w", err)
@@ -83,10 +83,10 @@ func (conn *Connection) SendMessage(message Message, sendOnCallback bool) (Messa
 				FileSHA256:    resp.FileSHA256,
 				FileLength:    &resp.FileLength,
 			}
-		case "text", "xls", "xlsx", "doc", "docx", "ppt", "pptx", "pdf":
+		case "txt", "xls", "xlsx", "doc", "docx", "ppt", "pptx", "pdf":
 			resp, err := conn.client.Upload(context.Background(), raw, whatsmeow.MediaDocument)
 			if err != nil {
-				return message, fmt.Errorf("failed to upload video to send: %w", err)
+				return message, fmt.Errorf("failed to upload document to send: %w", err)
 			}
 			mimeType := ""
 			switch ext {
