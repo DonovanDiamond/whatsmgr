@@ -47,6 +47,78 @@ func (conn *Connection) SendMessage(message Message, sendOnCallback bool) (Messa
 				FileSHA256:    resp.FileSHA256,
 				FileLength:    &resp.FileLength,
 			}
+		case "mp4":
+			resp, err := conn.client.Upload(context.Background(), raw, whatsmeow.MediaVideo)
+			if err != nil {
+				return message, fmt.Errorf("failed to upload video to send: %w", err)
+			}
+			out.VideoMessage = &waE2E.VideoMessage{
+				Caption:       proto.String(*message.ContentBody),
+				Mimetype:      proto.String("video/" + ext),
+				URL:           &resp.URL,
+				DirectPath:    &resp.DirectPath,
+				MediaKey:      resp.MediaKey,
+				FileEncSHA256: resp.FileEncSHA256,
+				FileSHA256:    resp.FileSHA256,
+				FileLength:    &resp.FileLength,
+			}
+		case "aac", "amr", "mp3", "m4a", "wav", "ogg":
+			resp, err := conn.client.Upload(context.Background(), raw, whatsmeow.MediaAudio)
+			if err != nil {
+				return message, fmt.Errorf("failed to upload audio to send: %w", err)
+			}
+			mimeType := "audio/" + ext
+			switch ext {
+			case "mp3":
+				mimeType = "audio/mpeg"
+			case "m4a":
+				mimeType = "audio/mp4"
+			}
+			out.AudioMessage = &waE2E.AudioMessage{
+				Mimetype:      proto.String(mimeType),
+				URL:           &resp.URL,
+				DirectPath:    &resp.DirectPath,
+				MediaKey:      resp.MediaKey,
+				FileEncSHA256: resp.FileEncSHA256,
+				FileSHA256:    resp.FileSHA256,
+				FileLength:    &resp.FileLength,
+			}
+		case "text", "xls", "xlsx", "doc", "docx", "ppt", "pptx", "pdf":
+			resp, err := conn.client.Upload(context.Background(), raw, whatsmeow.MediaDocument)
+			if err != nil {
+				return message, fmt.Errorf("failed to upload video to send: %w", err)
+			}
+			mimeType := ""
+			switch ext {
+			case "txt":
+				mimeType = "text/plain"
+			case "xls":
+				mimeType = "application/vnd.ms-excel"
+			case "xlsx":
+				mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+			case "doc":
+				mimeType = "application/msword"
+			case "docx":
+				mimeType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+			case "ppt":
+				mimeType = "application/vnd.ms-powerpoint"
+			case "pptx":
+				mimeType = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+			case "pdf":
+				mimeType = "application/pdf"
+			default:
+				return message, fmt.Errorf("unknown attachment type (could not determine mime type): %s", ext)
+			}
+			out.DocumentMessage = &waE2E.DocumentMessage{
+				Caption:       proto.String(*message.ContentBody),
+				Mimetype:      proto.String(mimeType),
+				URL:           &resp.URL,
+				DirectPath:    &resp.DirectPath,
+				MediaKey:      resp.MediaKey,
+				FileEncSHA256: resp.FileEncSHA256,
+				FileSHA256:    resp.FileSHA256,
+				FileLength:    &resp.FileLength,
+			}
 		default:
 			return message, fmt.Errorf("unknown attachment type: %s", ext)
 		}
