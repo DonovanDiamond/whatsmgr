@@ -52,17 +52,38 @@ func (conn *Connection) handleEvent(rawEvt any) {
 		if evt.Action.FullName != nil {
 			contact.ContactName = evt.Action.FullName
 		}
+		imageName, err := conn.pullProfilePhoto(evt.JID)
+		if err != nil {
+			log.Warn().Str("jid", contact.JID).Err(err).Msg("failed to pull profile photo")
+		}
+		if imageName != "" {
+			contact.ProfilePhoto = &imageName
+		}
 		conn.Callbacks.Contact(contact)
 	case *events.PushName:
 		contact := Contact{
 			JID:      evt.JID.String(),
 			PushName: &evt.NewPushName,
 		}
+		imageName, err := conn.pullProfilePhoto(evt.JID)
+		if err != nil {
+			log.Warn().Str("jid", contact.JID).Err(err).Msg("failed to pull profile photo")
+		}
+		if imageName != "" {
+			contact.ProfilePhoto = &imageName
+		}
 		conn.Callbacks.Contact(contact)
 	case *events.BusinessName:
 		contact := Contact{
 			JID:      evt.JID.String(),
 			PushName: &evt.NewBusinessName,
+		}
+		imageName, err := conn.pullProfilePhoto(evt.JID)
+		if err != nil {
+			log.Warn().Str("jid", contact.JID).Err(err).Msg("failed to pull profile photo")
+		}
+		if imageName != "" {
+			contact.ProfilePhoto = &imageName
 		}
 		conn.Callbacks.Contact(contact)
 	case *events.Pin:
@@ -247,6 +268,7 @@ func (conn *Connection) handleEvent(rawEvt any) {
 	case *events.Connected:
 		log.Info().Msg("Client is Connected, sending PresenceAvailable")
 		conn.client.SendPresence(types.PresenceAvailable)
+		conn.Callbacks.ConnStatus(ConnStatusConnected)
 	case *events.KeepAliveTimeout:
 		log.Warn().Any("evt", evt).Type("type", evt).Msg("NOT IMPLEMENTED")
 	case *events.KeepAliveRestored:
@@ -311,6 +333,7 @@ func (conn *Connection) handleEvent(rawEvt any) {
 		log.Info().Msg("Client is Disconnected")
 		conn.Callbacks.ConnStatus(ConnStatusDisconnected)
 	case *events.HistorySync:
+		conn.Callbacks.ConnStatus(ConnStatusConnected)
 		for _, conv := range evt.Data.Conversations {
 			if conv.ID == nil {
 				continue
@@ -339,7 +362,9 @@ func (conn *Connection) handleEvent(rawEvt any) {
 				if err != nil {
 					log.Warn().Str("jid", contact.JID).Err(err).Msg("failed to pull profile photo")
 				}
-				contact.ProfilePhoto = &imageName
+				if imageName != "" {
+					contact.ProfilePhoto = &imageName
+				}
 			}
 			if conv.Pinned != nil {
 				pinned := conv.GetPinned() != 0
@@ -410,6 +435,15 @@ func (conn *Connection) handleEvent(rawEvt any) {
 			status = MessageStatusRead
 		case types.ReceiptTypeServerError:
 			status = MessageStatusServerError
+		case types.ReceiptTypeInactive:
+			// this means that the chat is "inactive", so we should just update the contact and leave it at that
+			available := false
+			conn.Callbacks.Contact(Contact{
+				JID: evt.Chat.String(),
+
+				Available: &available,
+			})
+			return
 		default:
 			log.Error().Any("evt", evt).Type("type", evt.Type).Msg("Unknown receipt type received")
 			return
@@ -454,6 +488,13 @@ func (conn *Connection) handleEvent(rawEvt any) {
 			Available: &available,
 			LastSeen:  &evt.LastSeen,
 		}
+		imageName, err := conn.pullProfilePhoto(evt.From)
+		if err != nil {
+			log.Warn().Str("jid", contact.JID).Err(err).Msg("failed to pull profile photo")
+		}
+		if imageName != "" {
+			contact.ProfilePhoto = &imageName
+		}
 		conn.Callbacks.Contact(contact)
 	case *events.JoinedGroup:
 		parentJID := evt.GroupInfo.LinkedParentJID.String()
@@ -479,7 +520,9 @@ func (conn *Connection) handleEvent(rawEvt any) {
 		if err != nil {
 			log.Warn().Str("jid", contact.JID).Err(err).Msg("failed to pull profile photo")
 		}
-		contact.ProfilePhoto = &imageName
+		if imageName != "" {
+			contact.ProfilePhoto = &imageName
+		}
 		groupParticipants := []GroupParticipant{}
 		for _, par := range evt.GroupInfo.Participants {
 			groupParticipant := GroupParticipant{
@@ -521,6 +564,13 @@ func (conn *Connection) handleEvent(rawEvt any) {
 		if evt.MembershipApprovalMode != nil {
 			contact.GroupJoinApprovalRequired = &evt.MembershipApprovalMode.IsJoinApprovalRequired
 		}
+		imageName, err := conn.pullProfilePhoto(evt.JID)
+		if err != nil {
+			log.Warn().Str("jid", contact.JID).Err(err).Msg("failed to pull profile photo")
+		}
+		if imageName != "" {
+			contact.ProfilePhoto = &imageName
+		}
 
 		contact.GroupAddParticipants = []GroupParticipant{}
 		contact.GroupRemovedParticipants = []GroupParticipant{}
@@ -555,7 +605,9 @@ func (conn *Connection) handleEvent(rawEvt any) {
 		if err != nil {
 			log.Warn().Str("jid", contact.JID).Err(err).Msg("failed to pull profile photo")
 		}
-		contact.ProfilePhoto = &imageName
+		if imageName != "" {
+			contact.ProfilePhoto = &imageName
+		}
 		conn.Callbacks.Contact(contact)
 	case *events.UserAbout:
 		log.Warn().Any("evt", evt).Type("type", evt).Msg("NOT IMPLEMENTED")
