@@ -10,7 +10,7 @@ import (
 func (conn *Connection) pullAttachments(m events.Message) (attachments []string, caption string, err error) {
 	if att := m.Message.GetImageMessage(); att != nil {
 		caption = att.GetCaption()
-		raw, err := conn.client.Download(att)
+		raw, err := conn.client.Download(conn.ctx, att)
 		if err != nil {
 			return attachments, caption, fmt.Errorf("failed to download attachment: %w", err)
 		}
@@ -28,7 +28,7 @@ func (conn *Connection) pullAttachments(m events.Message) (attachments []string,
 		}
 	}
 	if att := m.Message.GetAudioMessage(); att != nil {
-		raw, err := conn.client.Download(att)
+		raw, err := conn.client.Download(conn.ctx, att)
 		if err != nil {
 			return attachments, caption, fmt.Errorf("failed to download attachment: %w", err)
 		}
@@ -49,7 +49,7 @@ func (conn *Connection) pullAttachments(m events.Message) (attachments []string,
 	}
 	if att := m.Message.GetVideoMessage(); att != nil {
 		caption = att.GetCaption()
-		raw, err := conn.client.Download(att)
+		raw, err := conn.client.Download(conn.ctx, att)
 		if err != nil {
 			return attachments, caption, fmt.Errorf("failed to download attachment: %w", err)
 		}
@@ -70,7 +70,7 @@ func (conn *Connection) pullAttachments(m events.Message) (attachments []string,
 	}
 	if att := m.Message.GetDocumentMessage(); att != nil {
 		caption = att.GetCaption()
-		raw, err := conn.client.Download(att)
+		raw, err := conn.client.Download(conn.ctx, att)
 		if err != nil {
 			return attachments, caption, fmt.Errorf("failed to download attachment: %w", err)
 		}
@@ -88,7 +88,7 @@ func (conn *Connection) pullAttachments(m events.Message) (attachments []string,
 		}
 	}
 	if att := m.Message.GetStickerMessage(); att != nil {
-		raw, err := conn.client.Download(att)
+		raw, err := conn.client.Download(conn.ctx, att)
 		if err != nil {
 			return attachments, caption, fmt.Errorf("failed to download attachment: %w", err)
 		}

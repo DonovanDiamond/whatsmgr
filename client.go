@@ -19,15 +19,17 @@ type Connection struct {
 	Callbacks Callbacks
 
 	client *whatsmeow.Client
+	ctx    context.Context
 }
 
 var ErrAlreadyConnected = errors.New("already connected")
 
-func (conn *Connection) Connect() error {
+func (conn *Connection) Connect(ctx context.Context) error {
 	if conn.client.IsConnected() || conn.client.IsLoggedIn() {
 		conn.Callbacks.ConnStatus(ConnStatusConnected)
 		return ErrAlreadyConnected
 	}
+	conn.ctx = ctx
 	if conn.Number == "" {
 		return fmt.Errorf("missing connection number")
 	}
@@ -38,6 +40,7 @@ func (conn *Connection) Connect() error {
 		return fmt.Errorf("missing media path")
 	}
 	storeConainter, err := sqlstore.New(
+		ctx,
 		"sqlite3",
 		fmt.Sprintf("file:%s?_foreign_keys=on", conn.DBPath),
 		conn.Log.Sub("sqlite"),
@@ -46,7 +49,7 @@ func (conn *Connection) Connect() error {
 		return fmt.Errorf("failed to create sqlstore: %w", err)
 	}
 
-	device, err := storeConainter.GetFirstDevice()
+	device, err := storeConainter.GetFirstDevice(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to get device from sqlstore: %w", err)
 	}
@@ -100,7 +103,7 @@ func (conn *Connection) runQRHandler() error {
 }
 
 func (conn *Connection) SyncAllContacts() error {
-	contacts, err := conn.client.Store.Contacts.GetAllContacts()
+	contacts, err := conn.client.Store.Contacts.GetAllContacts(conn.ctx)
 	if err != nil {
 		return fmt.Errorf("failed to get all contacts: %w", err)
 	}
