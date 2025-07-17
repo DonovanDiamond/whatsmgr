@@ -2,8 +2,8 @@ name: Update Go Dependencies
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Runs every Sunday at 02:00 UTC
-  workflow_dispatch:     # Allow manual triggering
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   update:
@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required for pushing tags
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -22,6 +24,9 @@ jobs:
           go get -u ./...
           go mod tidy
 
+      - name: Run tests
+        run: go test ./...
+
       - name: Commit changes
         run: |
           git config user.name "github-actions"
@@ -29,6 +34,13 @@ jobs:
           git add go.mod go.sum
           git commit -m "chore: update dependencies" || echo "No changes"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag as latest if tests passed
+        run: |
+          git tag -f latest
+          git push origin latest --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
