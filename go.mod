@@ -3,9 +3,9 @@ module github.com/DonovanDiamond/whatsmgr
 go 1.24.0
 
 require (
-	github.com/mattn/go-sqlite3 v1.14.29
+	github.com/mattn/go-sqlite3 v1.14.30
 	github.com/rs/zerolog v1.34.0
-	go.mau.fi/whatsmeow v0.0.0-20250729133431-9166d862a88c
+	go.mau.fi/whatsmeow v0.0.0-20250730164133-1ba6bd4b8987
 	google.golang.org/protobuf v1.36.6
 )
 
