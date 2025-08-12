@@ -3,9 +3,9 @@ module github.com/DonovanDiamond/whatsmgr
 go 1.24.0
 
 require (
-	github.com/mattn/go-sqlite3 v1.14.30
+	github.com/mattn/go-sqlite3 v1.14.31
 	github.com/rs/zerolog v1.34.0
-	go.mau.fi/whatsmeow v0.0.0-20250807072145-72ce90b82194
+	go.mau.fi/whatsmeow v0.0.0-20250811141640-b804d10c54c2
 	google.golang.org/protobuf v1.36.7
 )
 
@@ -19,7 +19,7 @@ require (
 	go.mau.fi/libsignal v0.2.0 // indirect
 	go.mau.fi/util v0.8.8 // indirect
 	golang.org/x/crypto v0.41.0 // indirect
-	golang.org/x/exp v0.0.0-20250808145144-a408d31f581a // indirect
+	golang.org/x/exp v0.0.0-20250811191247-51f88131bc50 // indirect
 	golang.org/x/net v0.43.0 // indirect
 	golang.org/x/sys v0.35.0 // indirect
 	golang.org/x/text v0.28.0 // indirect
