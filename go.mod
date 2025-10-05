@@ -5,7 +5,7 @@ go 1.24.0
 require (
 	github.com/mattn/go-sqlite3 v1.14.32
 	github.com/rs/zerolog v1.34.0
-	go.mau.fi/whatsmeow v0.0.0-20251003154939-d562355c4d82
+	go.mau.fi/whatsmeow v0.0.0-20251004173248-359e39387ad3
 	google.golang.org/protobuf v1.36.10
 )
 
@@ -19,7 +19,7 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/petermattis/goid v0.0.0-20250904145737-900bdf8bb490 // indirect
 	github.com/vektah/gqlparser/v2 v2.5.30 // indirect
-	go.mau.fi/libsignal v0.2.0 // indirect
+	go.mau.fi/libsignal v0.2.1-0.20251004173110-6e0a3f2435ed // indirect
 	go.mau.fi/util v0.9.1 // indirect
 	golang.org/x/crypto v0.42.0 // indirect
 	golang.org/x/exp v0.0.0-20251002181428-27f1f14c8bb9 // indirect
