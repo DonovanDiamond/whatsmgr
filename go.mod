@@ -5,7 +5,7 @@ go 1.24.0
 require (
 	github.com/mattn/go-sqlite3 v1.14.32
 	github.com/rs/zerolog v1.34.0
-	go.mau.fi/whatsmeow v0.0.0-20251023183934-2ced35dd7e8c
+	go.mau.fi/whatsmeow v0.0.0-20251024191251-088fa33fb87f
 	google.golang.org/protobuf v1.36.10
 )
 
