@@ -1,6 +1,7 @@
 package whatsmgr
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -267,7 +268,7 @@ func (conn *Connection) handleEvent(rawEvt any) {
 		log.Warn().Any("evt", evt).Type("type", evt).Msg("NOT IMPLEMENTED")
 	case *events.Connected:
 		log.Info().Msg("Client is Connected, sending PresenceAvailable")
-		conn.client.SendPresence(types.PresenceAvailable)
+		conn.client.SendPresence(context.Background(), types.PresenceAvailable)
 		conn.Callbacks.ConnStatus(ConnStatusConnected)
 	case *events.KeepAliveTimeout:
 		log.Warn().Any("evt", evt).Type("type", evt).Msg("NOT IMPLEMENTED")

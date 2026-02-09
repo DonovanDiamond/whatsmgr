@@ -1,6 +1,7 @@
 package whatsmgr
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -69,7 +70,7 @@ const (
 func (conn *Connection) pullProfilePhoto(jid types.JID) (imageName string, err error) {
 	existingID := conn.Callbacks.GetExistingProfilePhotoID(jid.String())
 
-	info, err := conn.client.GetProfilePictureInfo(jid, &whatsmeow.GetProfilePictureParams{
+	info, err := conn.client.GetProfilePictureInfo(context.Background(), jid, &whatsmeow.GetProfilePictureParams{
 		ExistingID: existingID,
 	})
 	if err != nil || info == nil {

@@ -3,27 +3,28 @@ module github.com/DonovanDiamond/whatsmgr
 go 1.24.0
 
 require (
-	github.com/mattn/go-sqlite3 v1.14.32
+	github.com/mattn/go-sqlite3 v1.14.33
 	github.com/rs/zerolog v1.34.0
-	go.mau.fi/whatsmeow v0.0.0-20251024191251-088fa33fb87f
-	google.golang.org/protobuf v1.36.10
+	go.mau.fi/whatsmeow v0.0.0-20260129212019-7787ab952245
+	google.golang.org/protobuf v1.36.11
 )
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/beeper/argo-go v1.1.2 // indirect
+	github.com/coder/websocket v1.8.14 // indirect
 	github.com/elliotchance/orderedmap/v3 v3.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/petermattis/goid v0.0.0-20250904145737-900bdf8bb490 // indirect
-	github.com/vektah/gqlparser/v2 v2.5.30 // indirect
+	github.com/petermattis/goid v0.0.0-20260113132338-7c7de50cc741 // indirect
+	github.com/vektah/gqlparser/v2 v2.5.31 // indirect
 	go.mau.fi/libsignal v0.2.1 // indirect
-	go.mau.fi/util v0.9.2 // indirect
-	golang.org/x/crypto v0.45.0 // indirect
-	golang.org/x/exp v0.0.0-20251023183803-a4bb9ffd2546 // indirect
-	golang.org/x/net v0.47.0 // indirect
-	golang.org/x/sys v0.38.0 // indirect
-	golang.org/x/text v0.31.0 // indirect
+	go.mau.fi/util v0.9.5 // indirect
+	golang.org/x/crypto v0.47.0 // indirect
+	golang.org/x/exp v0.0.0-20260112195511-716be5621a96 // indirect
+	golang.org/x/net v0.49.0 // indirect
+	golang.org/x/sys v0.41.0 // indirect
+	golang.org/x/text v0.33.0 // indirect
 )

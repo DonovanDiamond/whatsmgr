@@ -172,7 +172,7 @@ func (conn *Connection) SendRead(messageIDs []string, when time.Time, chatJID st
 	if err != nil {
 		return fmt.Errorf("failed to parse senderJID ('%s'): %w", senderJID, err)
 	}
-	return conn.client.MarkRead(messageIDs, when, chat, sender, receiptTypeExtra...)
+	return conn.client.MarkRead(context.Background(), messageIDs, when, chat, sender, receiptTypeExtra...)
 }
 
 func (conn *Connection) SendPlayed(messageIDs []string, when time.Time, chatJID string, senderJID string) error {

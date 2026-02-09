@@ -10,16 +10,16 @@ type Logger struct {
 	Module string
 }
 
-func (l *Logger) Warnf(msg string, args ...interface{}) {
+func (l *Logger) Warnf(msg string, args ...any) {
 	l.Warn().Str("_module", l.Module).Msgf(msg, args...)
 }
-func (l *Logger) Errorf(msg string, args ...interface{}) {
+func (l *Logger) Errorf(msg string, args ...any) {
 	l.Error().Str("_module", l.Module).Msgf(msg, args...)
 }
-func (l *Logger) Infof(msg string, args ...interface{}) {
+func (l *Logger) Infof(msg string, args ...any) {
 	l.Debug().Str("_module", l.Module).Msgf(msg, args...)
 }
-func (l *Logger) Debugf(msg string, args ...interface{}) {
+func (l *Logger) Debugf(msg string, args ...any) {
 	l.Trace().Str("_module", l.Module).Msgf(msg, args...)
 }
 func (l *Logger) Sub(module string) waLog.Logger {
